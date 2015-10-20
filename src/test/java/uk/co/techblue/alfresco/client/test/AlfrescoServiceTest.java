@@ -22,19 +22,23 @@ import uk.co.techblue.alfresco.exception.AuthenticationException;
 import uk.co.techblue.alfresco.exception.ContentException;
 import uk.co.techblue.alfresco.exception.GroupException;
 import uk.co.techblue.alfresco.exception.SearchException;
+import uk.co.techblue.alfresco.exception.SlingshotException;
 import uk.co.techblue.alfresco.exception.UserException;
 import uk.co.techblue.alfresco.service.AuthService;
 import uk.co.techblue.alfresco.service.ContentService;
 import uk.co.techblue.alfresco.service.GroupService;
+import uk.co.techblue.alfresco.service.SlingshotService;
 import uk.co.techblue.alfresco.service.UserService;
 
-public class AlfrescoServiceTest {
+public class AlfrescoServiceTest  {
 
 	private static final String BASE_URL = "http://localhost:8080";
-	private static final String AUTH_TICKET = "TICKET_6545adf481da58bb87490df0a7b75300d74921f5";
+	private static  String AUTH_TICKET = "TICKET_8267228e0ae818b4e7e31eb07b652f52f48b4f5d";
 
     public static void main(final String args[]) {
-        // testLogin(getCredentials());
+    	 AUTH_TICKET = testLogin(getCredentials());
+    	 
+    	 
         // testGetUsers();
         // testGetGroups();
         // testGetGroup();
@@ -47,12 +51,22 @@ public class AlfrescoServiceTest {
         // testUpdateUser();
         // testGetUser();
         // testGetContent();
-        testAdvancedSearch();
+       // testAdvancedSearch();
         // testUploadContent();
         // testStoreMetadata();
+         testDocLib();
     }
 
-    private static void testStoreMetadata() {
+    private static void testDocLib() {
+		final SlingshotService slingshotService = new SlingshotService(BASE_URL, AUTH_TICKET);
+		 try {
+	            System.out.println("RESPONSE:" + slingshotService.doclib("node/alfresco/company/home","recentlyAdded","cm_name"));
+	        }catch (SlingshotException e) {
+				e.printStackTrace();
+			}
+	}
+
+	private static void testStoreMetadata() {
         final ContentService contentService = new ContentService(BASE_URL,
             AUTH_TICKET);
         final ContentMetadata contentMetadata = new ContentMetadata();
@@ -61,7 +75,7 @@ public class AlfrescoServiceTest {
         properties.put("originator", "SavedbyWindowsInternetExplorer8");
         properties.put("application-id", "44284");
         contentMetadata.setProperties(properties);
-        ;
+        
         try {
             contentService.storeNodeMetadata("7b08f922-d84b-4aeb-a44c-8743c4a9d0d0", contentMetadata);
         } catch (final ContentException e) {
@@ -77,7 +91,7 @@ public class AlfrescoServiceTest {
         // FOR PROPCO CONTENT MODEL
         // SearchRequest searchReuqest = new SearchRequest("cm:lastName=\"Jain\"");
         // final SearchRequest searchReuqest = new SearchRequest("+PATH:\"//cm:QA//*\" +@cm\\:lastName:\"Jain\"");
-//        final SearchRequest searchReuqest = new SearchRequest("@techblue\\:application-id:44284");
+         // final SearchRequest searchReuqest = new SearchRequest("@techblue\\:application-id:44284");
         // final PagingConfig pagingConfig = new PagingConfig();
         // pagingConfig.setMaxItems(2);
         // pagingConfig.setSkipCount(5);
@@ -246,14 +260,15 @@ public class AlfrescoServiceTest {
         }
     }
 
-    private static void testLogin(final Credentials credentials) {
+    private static String testLogin(final Credentials credentials) {
         final AuthService authService = new AuthService(BASE_URL, credentials);
         try {
             final AuthResponse token = authService.login();
-            System.out.println("Auth Token: " + token);
+            return token.getAuthenticationData().getAuthenticationToken();
         } catch (final AuthenticationException e) {
             e.printStackTrace();
         }
+		return null;
     }
 
 	private static Credentials getCredentials() {

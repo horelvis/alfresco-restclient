@@ -22,6 +22,9 @@ public interface AlfrescoConstants {
 
     /** The resource context base path. */
     String RESOURCE_CONTEXT_BASE_PATH = "/alfresco/service/api/";
+    
+    /** The resource context base path. */
+    String RESOURCE_SLINGSHOT_CONTEXT_BASE_PATH = "/alfresco/service/";
 
     /** The auth ticket param name. */
     String AUTH_TICKET_PARAM_NAME = "alf_ticket";
