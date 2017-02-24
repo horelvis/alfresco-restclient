@@ -60,7 +60,7 @@ public class AlfrescoServiceTest  {
     private static void testDocLib() {
 		final SlingshotService slingshotService = new SlingshotService(BASE_URL, AUTH_TICKET);
 		 try {
-	            System.out.println("RESPONSE:" + slingshotService.doclib("node/alfresco/company/home","recentlyAdded","cm_name"));
+	            System.out.println("RESPONSE:" + slingshotService.doclib("type","node","node/alfresco/company/home","recentlyAdded","cm_name"));
 	        }catch (SlingshotException e) {
 				e.printStackTrace();
 			}

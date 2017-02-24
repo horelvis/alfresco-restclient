@@ -1,13 +1,22 @@
 package uk.co.techblue.alfresco.dto.content;
 
+import javax.ws.rs.QueryParam;
+
 import uk.co.techblue.alfresco.dto.BaseDto;
 
 @SuppressWarnings("serial")
 public class DocLibRequest extends BaseDto {
-
+	
+	@QueryParam("filter")
 	private String filter;
+	
+	@QueryParam("size")
 	private int size = 50;
+	
+	@QueryParam("pos")
 	private int pos = 1;
+	
+	@QueryParam("sortField")
 	private String sortField;
 
 	public String getFilter() {
